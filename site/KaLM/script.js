@@ -1,5 +1,27 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<div class="parallax">
-  <div class="img"></div>
-  <div class="block"></div>
-</div>
+function sendMessage() {
+    const userInput = document.getElementById('userInput').value;
+    const chatMessages = document.getElementById('chatMessages');
+
+    const userMessage = document.createElement('div');
+    userMessage.className = 'message user-message';
+    userMessage.innerText = userInput;
+    chatMessages.appendChild(userMessage);
+
+    fetch('сюда апи вроде', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message: userInput })
+    })
+    .then(response => response.json())
+    .then(data => {
+        const botMessage = document.createElement('div');
+        botMessage.className = 'message bot-message';
+        botMessage.innerText = data.message; 
+        chatMessages.appendChild(botMessage);
+    })
+    .catch(error => console.error('Ошибка:', error));
+
+    document.getElementById('userInput').value = '';
+}
