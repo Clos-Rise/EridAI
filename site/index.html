@@ -19,9 +19,7 @@
                 <span class="models-container">
                     Models <i class="fas fa-caret-down"></i>
                     <ul class="models-list">
-                        <li>KaLM</li>
-                        <li>Fractal</li>
-                        <li>BestView</li>
+                        <div class="DEV">KaLM</div>
                     </ul>
                 </span>
             </div>
@@ -44,7 +42,7 @@
 
     <section id="services" class="services">
         <div class="container">
-            <h2>Наши услуги</h2>
+            <h2>Наши услуги</h0>
             <div class="services-grid">
                 <div class="service-card">
                     <h3>Генерация текста</h3>
@@ -78,7 +76,7 @@
         <div class="container">
             <h2>Готовы начать работу с нами?</h2>
             <p>Присоединяйтесь к нашему Discord серверу, чтобы узнать больше о наших проектах и возможностях сотрудничества</p>
-            <a href="#" class="btn">Присоединиться к Discord</a>
+            <div class="panel" onclick="location.href='https://discord.gg/eridai'">Discord сервер</div>
         </div>
     </section>
 
@@ -89,11 +87,15 @@
     </footer>
 
     <script>
-        var plexus = new Plexus("plexus-test", {
-            pointsSpeed: 0.5,
-            pointsRadius: 1.1,
-            pointsStartDistance: 60
-        });
+        var plexus; 
+
+        window.onload = function() {
+            plexus = new Plexus("plexus-test", {
+                pointsSpeed: 0.5,
+                pointsRadius: 1.1,
+                pointsStartDistance: 60
+            });
+        };
 
         document.querySelector('.models-container').addEventListener('click', function(event) {
             event.preventDefault();
@@ -101,5 +103,10 @@
             modelsList.classList.toggle('show');
         });
     </script>
+<script>
+  document.querySelector('.DEV').addEventListener('click', function() {
+    window.location.href = 'kalm.html';
+  });
+</script>
 </body>
 </html>
