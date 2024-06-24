@@ -15,19 +15,18 @@
     <header>
         <nav class="container">
             <div class="logo">
-                EridAI
-                <span class="models-container">
-                    Models <i class="fas fa-caret-down"></i>
-                    <ul class="models-list">
-                        <div class="DEV">KaLM</div>
-                    </ul>
-                </span>
+                <img src="logo.png" alt="EridAI Logo" width="32" height="32" style="position: relative; top: 5px;">
+                <span style="position: relative; top: 0px;">EridAI</span>
             </div>
             <div class="nav-links">
                 <a href="#services">Услуги</a>
                 <a href="#about">О нас</a>
                 <a href="#contact">Контакты</a>
             </div>
+            <button class="models-button">Models <i class="fas fa-caret-down"></i></button>
+            <ul class="models-list">
+                <div class="DEV">KaLM</div>
+            </ul>
         </nav>
     </header>
 
@@ -42,7 +41,7 @@
 
     <section id="services" class="services">
         <div class="container">
-            <h2>Наши услуги</h0>
+            <h2>Наши услуги</h2>
             <div class="services-grid">
                 <div class="service-card">
                     <h3>Генерация текста</h3>
@@ -82,9 +81,45 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2024 EridAI. Все права защищены.</p>
+            <p> 2024 EridAI. GNU LICENSE.</p>
         </div>
     </footer>
+
+    <style>
+        .models-button {
+            background-color: #2E8B57;
+            color: white;
+            padding: 5px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .models-list {
+            display: none;
+            position: absolute;
+            top: 45px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .models-list.show {
+            display: block;
+        }
+
+        .models-list div {
+            padding: 5px 0;
+            cursor: pointer;
+        }
+    </style>
 
     <script>
         var plexus; 
@@ -97,7 +132,7 @@
             });
         };
 
-        document.querySelector('.models-container').addEventListener('click', function(event) {
+        document.querySelector('.models-button').addEventListener('click', function(event) {
             event.preventDefault();
             var modelsList = document.querySelector('.models-list');
             modelsList.classList.toggle('show');
