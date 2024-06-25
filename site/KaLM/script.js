@@ -7,7 +7,7 @@ function sendMessage() {
     userMessage.innerText = userInput;
     chatMessages.appendChild(userMessage);
 
-    fetch('сюда апи вроде', {
+    fetch('https://dc9f7f28-189d-4688-b19f-b540bd0d57f1.tunnel4.com', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
