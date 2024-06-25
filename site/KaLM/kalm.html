@@ -221,7 +221,7 @@
             chatHistory.push({ role: "user", content: message });
 
             const data = {
-                model: "erida",
+                model: modelSelect.value,
                 messages: chatHistory,
                 stream: true,
             };
