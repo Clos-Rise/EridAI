@@ -12,6 +12,8 @@
             --secondary-color: #f2a900;
             --background-color: #f0f0f0;
             --text-color: #333;
+            --button-color: #fff;
+            --error-color: #ff0000; /* Цвет для сообщения об ошибке */
         }
 
         * {
@@ -101,10 +103,17 @@
             align-self: flex-start;
         }
 
+        .error-message {
+            background-color: var(--error-color);
+            color: #fff;
+            align-self: center;
+        }
+
         .chat-input {
             display: flex;
             padding: 20px;
             background-color: #f9f9f9;
+            justify-content: flex-start;
         }
 
         .chat-input input {
@@ -116,18 +125,32 @@
         }
 
         .chat-input button {
-            padding: 10px 20px;
+            padding: 10px;
             background-color: var(--primary-color);
             color: #fff;
             border: none;
             border-radius: 5px;
-            margin-left: 10px;
             cursor: pointer;
             font-size: 16px;
+            margin-left: 10px;
         }
 
         .chat-input button:hover {
             background-color: #008c6a;
+        }
+
+        .micro-button {
+            padding: 10px;
+            background-color: var(--button-color);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .micro-button img {
+            width: 48px;
+            height: 48px;
         }
     </style>
 </head>
@@ -151,6 +174,7 @@
                     <!-- Messages will be added here dynamically -->
                 </div>
                 <div class="chat-input">
+                    <button class="micro-button" onclick="onMicroButtonClick()"><img src="micro.png" alt="Микрофон"></button>
                     <input type="text" id="user-input" placeholder="Введите ваше сообщение...">
                     <button id="send-button">Отправить</button>
                 </div>
@@ -163,53 +187,67 @@
         const userInput = document.getElementById('user-input');
         const sendButton = document.getElementById('send-button');
         const modelSelect = document.getElementById('model-select');
-    
+
         let chatHistory = [];
-    
-        function addMessage(content, isUser = false) {
+
+        function addMessage(content, isUser = false, isError = false) {
             const messageElement = document.createElement('div');
             messageElement.classList.add('message');
-            messageElement.classList.add(isUser ? 'user-message' : 'bot-message');
+            if (isUser) {
+                messageElement.classList.add('user-message');
+            } else if (isError) {
+                messageElement.classList.add('error-message');
+            } else {
+                messageElement.classList.add('bot-message');
+            }
             messageElement.textContent = content;
             chatMessages.appendChild(messageElement);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
-    
+
+        function onMicroButtonClick() {
+            const selectedModel = modelSelect.value;
+            if (selectedModel === 'kalm') {
+                addMessage("KaLM не поддерживает голосовой ввод", false, true);
+            } else {
+                // тута голосовую хуйню нада
+            }
+        }
+
         async function getModelResponse(message, model) {
-            const url = 'https://justcors.com/tl_7852665/https://fd98e2ce-72fa-4293-b5f7-9283ff37b7bf.tunnel4.com/api/chat';
-            
-    
+            const url = 'https://justcors.com/tl_7852665/https://82c8f0ed-6fd5-49b8-b99c-38c63ca28942.tunnel4.com/api/chat';
+
             chatHistory.push({ role: "user", content: message });
-    
+
             const data = {
-                model: "erida", // 'erida' - small model
+                model: model,
                 messages: chatHistory,
                 stream: true,
             };
-    
+
             try {
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: {
+                        'x-cors-api-key': 'temp_5ee35cbf7d4faedd8a763d36be826cf6',
                         'Content-Type': 'application/json',
                         'Access-Control-Allow-Origin': '*',
-                        // 'Origin': 'http://localhost:11434' // Add this if the proxy server requires origin information
                     },
                     body: JSON.stringify(data),
                 });
-                // generation logic
+
                 if (response.ok) {
                     const reader = response.body.getReader();
                     const decoder = new TextDecoder();
                     let completeResponse = "";
-    
+
                     while (true) {
                         const { done, value } = await reader.read();
                         if (done) break;
-    
+
                         const chunk = decoder.decode(value);
                         const lines = chunk.split('\n');
-    
+
                         for (const line of lines) {
                             if (line.trim() !== '') {
                                 try {
@@ -227,7 +265,7 @@
                             }
                         }
                     }
-    
+
                     return "An error occurred while processing the response.";
                 } else {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -237,26 +275,25 @@
                 return "Sorry, an error occurred while processing your request. There might be a CORS issue or an API access problem.";
             }
         }
-    
+
         sendButton.addEventListener('click', async () => {
             const message = userInput.value.trim();
             if (message) {
                 addMessage(message, true);
                 userInput.value = '';
-    
+
                 const model = modelSelect.value;
                 const response = await getModelResponse(message, model);
                 addMessage(response);
             }
         });
-    
+
         userInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 sendButton.click();
             }
         });
-    
-        // Add a welcome message
+
         addMessage("Привет! Я бот от команды EridAI!");
     </script>
 </body>
