@@ -176,10 +176,7 @@
         }
     
         async function getModelResponse(message, model) {
-            const url = 'https://justcors.com/tl_7852665/https://82c8f0ed-6fd5-49b8-b99c-38c63ca28942.tunnel4.com/api/chat';
-            // const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-            // const url = apiUrl;
-            // const url = 'https://corsproxy.io/?' + apiUrl;
+            const url = 'https://justcors.com/tl_7852665/https://9ead94df-4b12-4cf2-a812-0a2d3bc7a4fc.tunnel4.com/api/chat';
             
     
             chatHistory.push({ role: "user", content: message });
@@ -194,7 +191,6 @@
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: {
-                        'x-cors-api-key': 'temp_5ee35cbf7d4faedd8a763d36be826cf6',
                         'Content-Type': 'application/json',
                         'Access-Control-Allow-Origin': '*',
                         // 'Origin': 'http://localhost:11434' // Add this if the proxy server requires origin information
