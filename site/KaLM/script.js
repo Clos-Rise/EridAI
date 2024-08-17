@@ -1,27 +1,54 @@
-function sendMessage() {
-    const userInput = document.getElementById('userInput').value;
-    const chatMessages = document.getElementById('chatMessages');
+document.addEventListener('DOMContentLoaded', () => {
+    const chatMessages = document.getElementById('chat-messages');
+    const userInput = document.getElementById('user-input');
+    const sendButton = document.getElementById('send-button');
+    const modelSelect = document.getElementById('model-select');
 
-    const userMessage = document.createElement('div');
-    userMessage.className = 'message user-message';
-    userMessage.innerText = userInput;
-    chatMessages.appendChild(userMessage);
+    sendButton.addEventListener('click', async () => {
+        const message = userInput.value;
+        if (message.trim() !== '') {
+            sendButton.classList.add('sending');
+            setTimeout(() => {
+                sendButton.classList.remove('sending');
+            }, 300);
 
-    fetch('https://dc9f7f28-189d-4688-b19f-b540bd0d57f1.tunnel4.com', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ message: userInput })
-    })
-    .then(response => response.json())
-    .then(data => {
-        const botMessage = document.createElement('div');
-        botMessage.className = 'message bot-message';
-        botMessage.innerText = data.message; 
-        chatMessages.appendChild(botMessage);
-    })
-    .catch(error => console.error('Ошибка:', error));
+            addMessage('user', message);
+            userInput.value = '';
 
-    document.getElementById('userInput').value = '';
-}
+            const response = await getModelResponse(message);
+            addMessage('bot', response);
+        }
+    });
+
+    async function getModelResponse(message) {
+        const selectedModel = modelSelect.value;
+        const response = await fetch(`http://localhost:3000/api/model/${selectedModel}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message })
+        });
+        const data = await response.json();
+        return data.response;
+    }
+
+    function addMessage(sender, message) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message', sender);
+
+        const senderElement = document.createElement('span');
+        senderElement.classList.add('message-sender');
+        senderElement.textContent = sender === 'user' ? 'You' : 'Bot';
+
+        const textElement = document.createElement('span');
+        textElement.classList.add('message-text');
+        textElement.textContent = message;
+
+        messageElement.appendChild(senderElement);
+        messageElement.appendChild(textElement);
+
+        chatMessages.appendChild(messageElement);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+});
