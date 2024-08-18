@@ -113,8 +113,13 @@ body {
     }
 }
 
+.footer-item {
+    flex: 1;
+    margin: 5px;
+}
+
 #model-select {
-    margin-right: 10px;
+    width: 100%;
     padding: 5px;
     border-radius: 5px;
     border: none;
@@ -123,7 +128,7 @@ body {
 }
 
 #user-input {
-    flex: 1;
+    width: 100%;
     padding: 10px;
     border-radius: 5px;
     border: none;
@@ -132,7 +137,7 @@ body {
 }
 
 #send-button {
-    margin-left: 10px;
+    width: 100%;
     padding: 10px;
     border-radius: 5px;
     border: none;
@@ -177,8 +182,7 @@ body {
         flex-direction: column;
     }
 
-    #model-select, #user-input, #send-button {
+    .footer-item {
         width: 100%;
-        margin: 5px 0;
     }
 }
